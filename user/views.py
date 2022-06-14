@@ -1,9 +1,9 @@
 from django.shortcuts import render
+from django.conf import settings
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import permissions, status
-
 
 # Create your views here.
 from user.models import Hobby
@@ -21,6 +21,9 @@ class UserApiView(APIView):
     # permission_classes = [MyGoodPermission]
 
     def get(self, request):
+        # 글로벌 settings의 auth_user_model
+        print(settings.AUTH_USER_MODEL)
+
         # Hobby 조회
 
         # DoesNotExist 핸들링
