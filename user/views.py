@@ -2,7 +2,7 @@ from django.shortcuts import render
 
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework import permissions
+from rest_framework import permissions, status
 
 
 # Create your views here.
@@ -22,7 +22,12 @@ class UserApiView(APIView):
 
     def get(self, request):
         # Hobby 조회
-        hobby_list = Hobby.objects.filter(id__gt=5)
-        print(hobby_list)
+
+        # DoesNotExist 핸들링
+        try:
+            hobby = Hobby.objects.get(id=500)
+        except Hobby.DoesNotExist:
+            # object가 존재하지 않을 때 이벤트
+            return Response({"error": "오브젝트가 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)  # event 발생 시 나타낼 status 직접 지정도 가능하다
 
         return Response({"message": "get success!!"})
