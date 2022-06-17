@@ -46,6 +46,7 @@ class UserHomeworkApiView(APIView):
     def post(self, request):
         username = request.data.get('username', '')
         password = request.data.get('password', '')
+
         hashed_password = make_password(password)
         edit_user = Users.objects.get(username=username)
         edit_user.password = hashed_password
