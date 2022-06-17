@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'user',
+    'homework1',
     'user_homework',
     'blog',
 ]
