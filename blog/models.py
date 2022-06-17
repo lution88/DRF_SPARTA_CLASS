@@ -17,4 +17,4 @@ class Article(models.Model):
     content = models.TextField("글 내용")
 
     def __str__(self):
-        return f'{self.title} / {self.category.}'
+        return f'{self.title}'
