@@ -27,7 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = []
 
-AUTH_USER_MODEL = "user.User"
+AUTH_USER_MODEL = "user_homework.Users"
 
 # Application definition
 
@@ -40,6 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'user',
+    'user_homework',
+    'blog',
 ]
 
 MIDDLEWARE = [
