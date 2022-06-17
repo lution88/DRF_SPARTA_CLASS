@@ -25,7 +25,6 @@ class CanWriteArticle(permissions.BasePermission):
         user = request.user
 
         result = bool(user and request.user.dt_created < (timezone.now() - timedelta(minutes=20)))
-        print(timezone.now(), timedelta(minutes=2))
         return result
 
 
