@@ -1,3 +1,5 @@
+import random
+
 from django.db import models
 
 
@@ -7,7 +9,7 @@ class Author(models.Model):
     birthday = models.DateField("생일", null=True, blank=True)
 
     def __str__(self):
-        return f'{self.last_name}, {self.first_name}'
+        return f'{self.last_name} {self.first_name}'
 
 
 class Isbn(models.Model):
