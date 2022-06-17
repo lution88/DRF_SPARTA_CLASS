@@ -22,23 +22,6 @@ class UserApiView(APIView):
     # permission_classes = [MyGoodPermission]
 
     def get(self, request):
-        # 글로벌 settings의 auth_user_model
-        print("settings.AUTH_USER_MODEL: ", settings.AUTH_USER_MODEL)
-        # 정참조
-        '''
-        user_profile = UserProfile.objects.get(user=1)
-        print("정참조")
-        print("user_profile.user: ", user_profile.user)
-        print("user_profile.hobby: ", user_profile.hobby)
-        '''
-
-        # 역참조
-        print("역참조")
-        '''
-        hobby = Hobby.objects.get(id=1)
-        hobby.userprofile_set
-        '''
-
         user = User.objects.get(id=1)
 
         hobby_s = user.userprofile.hobby.all()
@@ -52,17 +35,6 @@ class UserApiView(APIView):
 
             print(f'hobby : {hobby.name} / 역참조 hobby members : {hobby_members}')
 
-
-        #
-        #     # break
-        # # Hobby 조회
-        # # DoesNotExist 핸들링
-        # try:
-        #     hobby = Hobby.objects.get(id=5)
-        #     print(hobby)
-        # except Hobby.DoesNotExist:
-        #     # object가 존재하지 않을 때 이벤트
-        #     return Response({"error": "오브젝트가 존재하지 않습니다."}, status=status.HTTP_400_BAD_REQUEST)  # event 발생 시 나타낼 status 직접 지정도 가능하다
         return Response({"message": "get success!!"})
 
 
