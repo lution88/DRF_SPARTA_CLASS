@@ -22,23 +22,16 @@ class UserApiView(APIView):
     # permission_classes = [MyGoodPermission]
 
     def get(self, request):
-        user = User.objects.get(id=1)
+        # 모든 사용자에 대해서 user정보와 userprofile 정보를 가져오고
+        # 같은 취미를 가진 사람들 출력하기
+        # 가장 먼저 할 일 : serializers.py 선언
 
-        hobby_s = user.userprofile.hobby.all()
-        for hobby in hobby_s:
-            # exclde : 매칭 된 쿼리만 제외, filter와 반대
-            # annotate : 필드 이름을 변경해주기 위해 사용, 이 외에도 원하는 필드를 추가하는 등 다양하게 활용 가능
-            # values / values_list : 지정한 필드만 리턴 할 수 있음. values는 dict로 return, values_list는 tuple로 ruturn
-            # F() : 객체에 해당되는 쿼리를 생성함
-            hobby_members = hobby.userprofile_set.exclude(user=user).annotate(username=F('user__username')).values_list("username", flat=True)
-            hobby_members = list(hobby_members)
-
-            print(f'hobby : {hobby.name} / 역참조 hobby members : {hobby_members}')
 
         return Response({"message": "get success!!"})
 
 
     def post(self, request):
+        # 로그인 기능
         username = request.data.get('username', '')
         password = request.data.get('password', '')
 
