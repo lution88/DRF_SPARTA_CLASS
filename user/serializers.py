@@ -12,10 +12,24 @@ class HobbySerializer(serializers.ModelSerializer):
     1. HobbySerializer 선언
     2. UserProfileSerializer 의 필드에 추가.
     3. 쿼리셋이므로 HobbySerializer() 안에 many=True 를 넣어준다.
+    - 번외
+    - 같은 취미를 공유하는 사람들을 알고 싶을때 : serializers의 ModelSerializerMethodField 사용. 메소드필드
+    1. 변수 same_hobby_users 를 정하고 serializers.SerializerMethodField() 선언
+    2. 변수를 받아오는 함수를 만들어서 obj를 받는다.
+    3. HobbySerializer 의 필드에 same_hobby_users 를 추가해 준다.
+    4. user_list 리스트 선언하고 역참조 써서 같은 취미를 가진 유저들을 받아온다.
+    5.
     """
+    same_hobby_users = serializers.SerializerMethodField()
+    def get_same_hobby_users(self, obj):
+        user_list = [user_profile.user.username for user_profile in obj.userprofile_set.all()]
+        print(obj.userprofile_set.all())
+        return {"같은 취미를 가진 사람" : [user_list]}
+
+
     class Meta:
         model = HobbyModel
-        fields = ["name"]
+        fields = ["name", "same_hobby_users"]
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
