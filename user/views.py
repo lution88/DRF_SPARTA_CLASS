@@ -8,7 +8,6 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 
 from user.models import Hobby, UserProfile, User
-from user_homework.models import Users
 from user.serializers import UserSerializer
 
 
@@ -36,7 +35,7 @@ class UserApiView(APIView):
         7. status code 지정해주기.
         """
 
-        return Response(UserSerializer(Users.objects.all(), many=True).data, status=status.HTTP_200_OK)
+        return Response(UserSerializer(User.objects.all().order_by('?').first()).data, status=status.HTTP_200_OK)
 
 
     def post(self, request):
