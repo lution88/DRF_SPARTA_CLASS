@@ -8,7 +8,7 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 
 from user.models import Hobby, UserProfile, User
-
+from user.serializers import UserSerializer
 
 class MyGoodPermission(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -22,12 +22,19 @@ class UserApiView(APIView):
     # permission_classes = [MyGoodPermission]
 
     def get(self, request):
-        # 모든 사용자에 대해서 user정보와 userprofile 정보를 가져오고
-        # 같은 취미를 가진 사람들 출력하기
-        # 가장 먼저 할 일 : serializers.py 선언
+        """
+        모든 사용자에 대해서 user정보와 userprofile 정보를 가져오고
+        같은 취미를 가진 사람들 출력하기
+        1. 가장 먼저 할 일 : serializers.py 선언
+        2. views.py 에 작성한 serializer import UserSerializer
+        3. Response에 UserSerializer() 를 적고 안에 "쿼리셋"이나 "인스턴스"를 넣어준다.
+        4. UserSerializer(User.objects.all()) 모든 유저에 대해서 UserSerializer를 돌린다.
+        5. 쿼리셋으로 넣어주면 뒤에 many=Ture 를 꼭!! 꼭!! 붙여준다.
+        6. 그리고 마지막에 .data 를 붙여줘야 JSON 데이터로 나오게 된다.
+        """
 
 
-        return Response({"message": "get success!!"})
+        return Response(UserSerializer(User.objects.all(), many=True).data)
 
 
     def post(self, request):
