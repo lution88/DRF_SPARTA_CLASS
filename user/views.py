@@ -8,7 +8,9 @@ from rest_framework.response import Response
 from rest_framework import permissions, status
 
 from user.models import Hobby, UserProfile, User
+from user_homework.models import Users
 from user.serializers import UserSerializer
+
 
 class MyGoodPermission(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -31,10 +33,10 @@ class UserApiView(APIView):
         4. UserSerializer(User.objects.all()) 모든 유저에 대해서 UserSerializer를 돌린다.
         5. 쿼리셋으로 넣어주면 뒤에 many=Ture 를 꼭!! 꼭!! 붙여준다.
         6. 그리고 마지막에 .data 를 붙여줘야 JSON 데이터로 나오게 된다.
+        7. status code 지정해주기.
         """
 
-
-        return Response(UserSerializer(User.objects.all(), many=True).data)
+        return Response(UserSerializer(Users.objects.all(), many=True).data, status=status.HTTP_200_OK)
 
 
     def post(self, request):
