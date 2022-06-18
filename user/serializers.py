@@ -6,20 +6,32 @@ from user.models import Hobby as HobbyModel
 from user_homework.models import Users, UserProfile
 
 
-"""
-지금은 UserSerializer로 유저 프로필 없이 사용자 정보만 보이고 있다.
-유저프로필도 추가해 보자!
-1. 유저프로필에 대한 시리얼라이저 생성
-2. 사용할 모델은 UserProfileModel / fields = "__all__"
-3. UserSerializer 안에 userprofile 선언 
-4. 선언한 userprofile 을 UserSerializer 의 필드로 넣어준다.
-"""
+class HobbySerializer(serializers.ModelSerializer):
+    """
+    Hobby 시리얼라이저 추가하기!
+    1. HobbySerializer 선언
+    2. UserProfileSerializer 의 필드에 추가.
+    3. 쿼리셋이므로 HobbySerializer() 안에 many=True 를 넣어준다.
+    """
+    class Meta:
+        model = HobbyModel
+        fields = ["name"]
 
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    hobby = HobbySerializer(many=True)
+    """
+    지금은 UserSerializer로 유저 프로필 없이 사용자 정보만 보이고 있다.
+    유저프로필도 추가해 보자!
+    1. 유저프로필에 대한 시리얼라이저 생성
+    2. 사용할 모델은 UserProfileModel / fields = "__all__"
+    3. UserSerializer 안에 userprofile 선언
+    4. 선언한 userprofile 을 UserSerializer 의 필드로 넣어준다.
+    """
     class Meta:
         model = UserProfileModel
-        fields = "__all__"
+        # fields = "__all__"
+        fields = ["introduction", "birthday", "age", "hobby"]
 
 
 class UserSerializer(serializers.ModelSerializer):
