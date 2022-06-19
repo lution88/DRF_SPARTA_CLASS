@@ -1,8 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser
 
-
 # custom user model 사용 시 UserManager 클래스와 create_user, create_superuser 함수가 정의되어 있어야 함
+
+
 class UserManager(BaseUserManager):
     def create_user(self, username, password=None):
         if not username:
