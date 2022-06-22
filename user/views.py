@@ -1,4 +1,4 @@
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.db.models import F
 from django.shortcuts import render
 from django.conf import settings
@@ -20,8 +20,6 @@ class MyGoodPermission(permissions.BasePermission):
 
 class UserApiView(APIView):
     permission_classes = [permissions.AllowAny]
-    # permission_classes = [MyGoodPermission]
-
     def get(self, request):
         """
         모든 사용자에 대해서 user정보와 userprofile 정보를 가져오고
@@ -38,6 +36,22 @@ class UserApiView(APIView):
         return Response(UserSerializer(User.objects.all().order_by('?').first()).data, status=status.HTTP_200_OK)
 
 
+    def post(self, request):
+        """
+        사용자 정보를 입력받아 create 하는 함수
+        """
+        user_serializer = UserSerializer(data=request.data)
+
+        # 유효성 정상.
+        if user_serializer.is_valid():
+            user_serializer.save()
+            return Response(user_serializer.data, status=status.HTTP_200_OK)
+
+        # 비정상
+        return Response(user_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class UserLoginView(APIView):
     def post(self, request):
         # 로그인 기능
         username = request.data.get('username', '')
