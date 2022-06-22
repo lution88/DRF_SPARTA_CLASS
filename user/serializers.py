@@ -85,4 +85,15 @@ class UserSerializer(serializers.ModelSerializer):
         # extra_kwargs : 이 안에서 필드들에 대한 설정을 할 수 있다.
         extra_kwargs = {
             'password': {'write_only': True}, # 패스워드는 write_only 로 쓰기전용으로 사용한다 설정! read하지 않겠다!
+            'email': {
+                # error_messages : 에러 메세지를 자유롭게 설정 할 수 있다.
+                'error_messages': {
+                    # required : 값이 입력되지 않았을 때 보여지는 메세지
+                    'required': '이메일을 입력해주세요.',
+                    # invalid : 값의 포맷이 맞지 않을 때 보여지는 메세지
+                    'invalid': '알맞은 형식의 이메일을 입력해주세요.'
+                },
+                # required : validator에서 해당 값의 필요 여부를 판단한다.
+                'required': False  # default : True
+            },
         }
