@@ -55,9 +55,11 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     userprofile = UserProfileSerializer() # 시리얼라이저가 기본적으로 생성을 못해준다 -> 커스텀 create 선언해서 사용.
 
+    def validate(self, data):
+
+
     # create 함수 선언.
     def create(self, validated_data):
-        print(validated_data)
         # object를 생성할때 다른 데이터가 입력되는 것을 방지하기 위해 미리 pop 해준다.
         user_profile = validated_data.pop('userprofile') # 데이터를 뽑기위해 pop을 한다.
         get_hobbys = user_profile.pop("get_hobbys", [])
@@ -94,6 +96,6 @@ class UserSerializer(serializers.ModelSerializer):
                     'invalid': '알맞은 형식의 이메일을 입력해주세요.'
                 },
                 # required : validator에서 해당 값의 필요 여부를 판단한다.
-                'required': False  # default : True
+                'required': True  # default : True
             },
         }
