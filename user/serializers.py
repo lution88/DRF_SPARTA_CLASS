@@ -37,7 +37,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
     # hobby는 데이터를 직렬화 할 때, get_hobbys는 profile을 등록할 떄 사용된다.
     hobby = HobbySerializer(many=True, required=False)
     get_hobbys = serializers.ListField(required=False)
-    # required: 무조건 데이터를 넣지 않아도 된다. "기본값=True"
+    # required: 데이터 필수를 나타낸다. "기본값=True, 데이터 필수가 기본값."
     """
     지금은 UserSerializer로 유저 프로필 없이 사용자 정보만 보이고 있다.
     유저프로필도 추가해 보자!
@@ -55,8 +55,18 @@ class UserProfileSerializer(serializers.ModelSerializer):
 class UserSerializer(serializers.ModelSerializer):
     userprofile = UserProfileSerializer() # 시리얼라이저가 기본적으로 생성을 못해준다 -> 커스텀 create 선언해서 사용.
 
+    # custom validate
     def validate(self, data):
+        # custom validation pattern
+        if data.get("userprofile", {}).get("age", 0) < 12:
+            # validation에 통과하지 못할 경우 ValidationError class 호출
+            raise serializers.ValidationError(
+                # custom validation error message
+                detail={"error": "12세 이상만 가입할 수 있습니다."},
+            )
 
+        # validation에 문제가 없는 경우 data return
+        return data
 
     # create 함수 선언.
     def create(self, validated_data):
