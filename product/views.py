@@ -1,3 +1,5 @@
+from datetime import datetime
+
 from django.shortcuts import render
 from rest_framework import status
 from rest_framework.response import Response
@@ -9,7 +11,14 @@ from product.models import Event
 
 class EventApiView(APIView):
     def get(self, request):
-        return Response({"message": "success!!"})
+        today = datetime.now().date()
+        # 등록된 이벤트 중 현재 시간이 노출 시작 일과 노출 종료 일의 사이에 있고, 활성화 여부가 True인 event 쿼리셋 조회
+        events = Event.objects.filter(
+            exposure_start_date__lte=today, # start <= today <= end
+            exposure_end_date__gte=today,
+            is_active=True
+        )
+        return Response(EventSerializer(events, many=True).data, status=status.HTTP_200_OK)
 
     def post(self, request):
         event_serializer = EventSerializer(data=request.data)
