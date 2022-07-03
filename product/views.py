@@ -1,6 +1,8 @@
+import os.path
 from datetime import datetime
 
 from django.shortcuts import render
+from django.views.static import serve
 from rest_framework import status
 from rest_framework.response import Response
 from rest_framework.views import APIView
@@ -35,3 +37,10 @@ class EventApiView(APIView):
             event_serializer.save()
             return Response(event_serializer.data, status=status.HTTP_200_OK)
         return Response(event_serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+
+class EventThumbnailView(APIView):
+    def get(self, request, event_id):
+        event = Event.objects.get(id=event_id)
+        file_path = event.thumbnail.path
+        return serve(request, os.path.basename(file_path), os.path.dirname(file_path))
